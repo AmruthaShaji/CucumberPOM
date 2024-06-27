@@ -6,7 +6,12 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
+import static StepDefinitions.Hook.getDriver;
 
 public class HotelSD {
 
@@ -126,10 +131,40 @@ HotelSearch htn=new HotelSearch();
     @When("I select option for stars as {}")
     public void iSelectOptionForStarsAs(String stars) {
         htn.starRatingclick(stars);
+
     }
 
     @Then("I verify system displays only {} hotels on search result")
-    public void iVerifySystemDisplaysOnlyHotelsOnSearchResult(String arg0) {
+    public void iVerifySystemDisplaysOnlyHotelsOnSearchResult(String stars) {
 
+        int Starsint = Integer.parseInt(stars.split(" ")[0]);
+
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        ArrayList<Integer> hotelstarratings = htn.getHotelStarRating();
+
+        System.out.println(hotelstarratings);
+
+        /*boolean starflag=true;
+        for(Integer hotelstarratings1:hotelstarratings ) {
+            if (hotelstarratings1 != Starsint)
+                starflag = false;
+        }
+           Assert.assertTrue("some hotels are not"+stars,starflag);
+
+        */
+
+        int frequency=Collections.frequency(hotelstarratings,Starsint);
+        int listsize=hotelstarratings.size();
+        boolean starsflag;
+        if(frequency==listsize)
+            starsflag=true;
+        else
+            starsflag=false;
+
+        Assert.assertTrue("some hotes are not"+stars,starsflag);
     }
+
+
+
+
 }

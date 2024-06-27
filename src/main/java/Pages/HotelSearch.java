@@ -49,9 +49,42 @@ public class HotelSearch extends Base {
         return pricelist;
     }
 
-    public void starRatingclick(String star)
-    {
-        List<By>ratings=(List<By>)By.xpath("//div[contains(@class,'beb79c8078 b12c1fa68c') and div/h3[contains(text(),'Property rating')]]//div[contains(text(),'5 stars')]");
-        ClickOn(ratings.get(0));
+
+
+   // By individualHotelRatings=By.xpath(" //div[contains(@aria-label,'out of 5')]");
+    public void starRatingclick(String star) {
+        //List<Webe>ratings=(List<By>)By.xpath("//div[contains(@class,'beb79c8078 b12c1fa68c') and div/h3[contains(text(),'Property rating')]]//div[contains(text(),'5 stars')]");
+        // ClickOn(ratings.get(0));
+        String splitstar=star.split(" ")[0];
+       // By starfilter = By.xpath("//div[contains(@class,'beb79c8078 b12c1fa68c') and div/h3[contains(text(),'Property rating')]]//div[contains(text(),'" + splitstar + " stars')]");
+        By starfilter = By.xpath("//div[contains(@class,'beb79c8078 b12c1fa68c') and div/h3[contains(text(),'Property rating')]]//div[contains(text(),'4 stars')]");
+        ClickOn(starfilter);//clicking on the required star rating
+
+    }
+
+    By individualHotelRatings=By.xpath("//div[contains(@aria-label,'out of 5')]");
+
+    public ArrayList<Integer> getHotelStarRating()
+        {
+
+
+            List<WebElement>starratings= getDriver().findElements(individualHotelRatings);
+
+
+            ArrayList<Integer>stars=new ArrayList<>();
+            String starvalue;
+            int stars1;
+
+        for(WebElement starratings1:starratings)
+        {
+             starvalue= starratings1.getAttribute("aria-label");
+
+             stars1=Integer.parseInt(starvalue.split(" ")[0]);
+            stars.add(stars1);
+        }
+
+            System.out.println(stars);
+return stars;
+
     }
 }
